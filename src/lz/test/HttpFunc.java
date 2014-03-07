@@ -16,7 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 public class HttpFunc {
 	public String execute(String url) {
-		String result = null;
+		String result = "";
 		try {
             BufferedReader reader = null;
             HttpGet request = new HttpGet();
@@ -33,7 +33,7 @@ public class HttpFunc {
             result = strBuffer.toString();
 		}
 		catch (Exception e) {
-		
+			e.printStackTrace();
 		}
 		return result;
 	}
