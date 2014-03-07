@@ -4,18 +4,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/Text"
-        android:layout_width="fill_content"
-        android:layout_height="fill_content"
-        android:gravity=""
-        android:text="登录" />
-
     <EditText
         android:id="@+id/id"
-        android:layout_width="match_parent"
-        android:layout_height="145dp"
-        android:ems="10"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
         android:hint="帐号" >
 
         <requestFocus />
@@ -23,18 +15,23 @@
 
     <EditText
         android:id="@+id/pwd"
-        android:layout_width="match_parent"
-        android:layout_height="116"
-        android:layout_weight="0.05"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
         android:hint="密码"
-        android:password="true" />
+    />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
+        android:id = "@+id/login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" 
+        android:text="登录"
+    />
+
+    <Button
+        android:id = "@+id/register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:text="注册"
+    />
 
 </LinearLayout>
