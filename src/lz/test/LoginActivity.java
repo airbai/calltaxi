@@ -1,6 +1,7 @@
 package lz.test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
@@ -23,30 +24,28 @@ public class LoginActivity extends Activity {
 
     	btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				/*
-				String Sid = InputId.getText().toString();
-                String Spwd = InputPwd.getText().toString();
-                Log.e("login",Sid);
-                Log.e("login",Spwd);
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                */
+				String Sid = inputId.getText().toString();
+                String Spwd = inputPwd.getText().toString();
+
+                String url = "http://10.0.2.2/login.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
+                Log.e("test", url);
+                String ret = new HttpFunc().execute(url);
+                Log.e("ret", ret);
+                if(true == ret.equals("yes"))
+                	startActivity(new Intent(LoginActivity.this, MapActivity.class));
+                else {
+                 	new AlertDialog.Builder(LoginActivity.this).setMessage("密码错误")
+                    .setPositiveButton("确定", null)
+                    .setCancelable(true)
+                    .show();
+                }
 			}
     	});
 
     	btnRegister.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				/*
-				String Sid = InputId.getText().toString();
-                String Spwd = InputPwd.getText().toString();
-                Log.e("login",Sid);
-                Log.e("login",Spwd);
-                String url = "http://townboy.net";
-                String ret = new HttpFunc().execute(url);
-                Log.e("test", ret);
-                */
 				startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-				finish();
-			}
+			}	
     	});
 
     }

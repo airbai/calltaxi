@@ -12,7 +12,7 @@ import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;  
 import com.baidu.platform.comapi.basestruct.GeoPoint;  
        
-public class MainActivity extends Activity{  
+public class MapActivity extends Activity{  
     BMapManager mBMapMan = null;
     MapView mMapView = null;
     @Override  
