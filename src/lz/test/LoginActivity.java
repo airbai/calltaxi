@@ -1,6 +1,7 @@
 package lz.test;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import android.util.Log;
@@ -8,30 +9,33 @@ import android.view.*;
 
 public class LoginActivity extends Activity {
 	
-	public EditText InputId, InputPwd;
-	public Button BtnLogin, BtnRegister;
+	public EditText inputId, inputPwd;
+	public Button btnLogin, btnRegister;
 
     public void onCreate(Bundle savedInstanceState){  
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_login);  
-    	BtnLogin = (Button)findViewById(R.id.login_button);
-    	BtnRegister = (Button)findViewById(R.id.register_button);
+    	btnLogin = (Button)findViewById(R.id.login_button);
+    	btnRegister = (Button)findViewById(R.id.register_button);
     	
-    	InputId = (EditText)findViewById(R.id.login_username);
-    	InputPwd = (EditText)findViewById(R.id.login_psword);
+    	inputId = (EditText)findViewById(R.id.login_username);
+    	inputPwd = (EditText)findViewById(R.id.login_psword);
 
-    	BtnLogin.setOnClickListener(new View.OnClickListener() {
+    	btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				/*
 				String Sid = InputId.getText().toString();
                 String Spwd = InputPwd.getText().toString();
                 Log.e("login",Sid);
                 Log.e("login",Spwd);
-
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                */
 			}
     	});
 
-    	BtnRegister.setOnClickListener(new View.OnClickListener() {
+    	btnRegister.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				/*
 				String Sid = InputId.getText().toString();
                 String Spwd = InputPwd.getText().toString();
                 Log.e("login",Sid);
@@ -39,6 +43,9 @@ public class LoginActivity extends Activity {
                 String url = "http://townboy.net";
                 String ret = new HttpFunc().execute(url);
                 Log.e("test", ret);
+                */
+				startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+				finish();
 			}
     	});
 
