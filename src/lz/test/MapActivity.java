@@ -11,10 +11,27 @@ import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapPoi;  
 import com.baidu.mapapi.map.MapView;  
 import com.baidu.platform.comapi.basestruct.GeoPoint;  
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.BDNotifyListener;//假如用到位置提醒功能，需要import该类
+//如果使用地理围栏功能，需要import如下类
+import com.baidu.location.BDGeofence;
+import com.baidu.location.BDLocationStatusCodes;
+import com.baidu.location.GeofenceClient;
+import com.baidu.location.GeofenceClient.OnAddBDGeofencesResultListener;
+import com.baidu.location.GeofenceClient.OnGeofenceTriggerListener;
+import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
        
 public class MapActivity extends Activity{  
-    BMapManager mBMapMan = null;
-    MapView mMapView = null;
+    public BMapManager mBMapMan = null;
+    public MapView mMapView = null;
+
+    public LocationClient mLocationClient = null;
+    public BDLocationListener myListener = new MyLocationListener();
+
     @Override  
     public void onCreate(Bundle savedInstanceState){  
         super.onCreate(savedInstanceState);  
@@ -32,6 +49,7 @@ public class MapActivity extends Activity{
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
     }  
+
     @Override  
     protected void onDestroy(){  
             mMapView.destroy();  
@@ -41,6 +59,7 @@ public class MapActivity extends Activity{
             }  
             super.onDestroy();  
     }  
+
     @Override  
     protected void onPause(){  
             mMapView.onPause();  
@@ -49,6 +68,7 @@ public class MapActivity extends Activity{
             }  
             super.onPause();  
     }  
+
     @Override  
     protected void onResume(){  
             mMapView.onResume();  
