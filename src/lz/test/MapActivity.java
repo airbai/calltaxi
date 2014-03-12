@@ -1,5 +1,6 @@
 package lz.test;
 import android.app.Activity;  
+import android.app.AlertDialog;
 import android.content.res.Configuration;  
 import android.os.Bundle;  
 import android.util.Log;
@@ -33,7 +34,8 @@ public class MapActivity extends Activity{
     public MapView mMapView = null;
 
     public LocationClient mLocationClient = null;
-    public BDLocationListener myListener = new MyLocationListener();
+ //   public BDLocationListener myListener = new MyLocationListener();
+    public MyLocationListener myListener = new MyLocationListener();
     
     public void getLoc() {
         LocationClientOption option = new LocationClientOption();
@@ -51,7 +53,7 @@ public class MapActivity extends Activity{
         mBMapMan=new BMapManager(getApplication());  
         mBMapMan.init(mK, null);    
         
-        mLocationClient = new LocationClient(getApplication());
+        mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.setAccessKey(mK);
         mLocationClient.registerLocationListener(myListener);
         
@@ -72,7 +74,12 @@ public class MapActivity extends Activity{
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
             mLocationClient.start();
-            Log.e("test", "success");
+         	new AlertDialog.Builder(MapActivity.this).setMessage(myListener.locationSb.toString()+ " null")
+            .setPositiveButton("确定", null)
+            .setCancelable(true)
+            .show();
+
+            Log.e("fuck", "success");
         }
         else
             Log.e("LocSDK3", "locClient is null or not started");
@@ -81,7 +88,7 @@ public class MapActivity extends Activity{
     @Override  
     protected void onDestroy(){  
             mMapView.destroy();  
-            if(mBMapMan!=null){  
+            if(mBMapMan!=null) {
                     mBMapMan.destroy();  
                     mBMapMan=null;  
             }  
