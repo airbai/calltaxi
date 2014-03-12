@@ -1,6 +1,7 @@
 package lz.test;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,6 +11,11 @@ import com.baidu.location.BDLocationListener;
 public class MyLocationListener implements BDLocationListener {
 	
 	 public String locationSb = "gan a";
+	 public Context context;
+	 
+	 public MyLocationListener(Context tmp) {
+		 context = tmp;
+	 }
 
 	 public void onReceiveLocation(BDLocation location) {
 		 if (location == null)
@@ -37,6 +43,8 @@ public class MyLocationListener implements BDLocationListener {
 		 }
 		 Log.e("test",sb.toString());
 		 locationSb = sb.toString();
+		 Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
+		 toast.show();
 	}    
     
 	public void onReceivePoi(BDLocation poiLocation) {

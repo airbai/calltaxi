@@ -1,6 +1,7 @@
 package lz.test;
 import android.app.Activity;  
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.res.Configuration;  
 import android.os.Bundle;  
 import android.util.Log;
@@ -34,8 +35,7 @@ public class MapActivity extends Activity{
     public MapView mMapView = null;
     
     public LocationClient mLocationClient = null;
- //   public BDLocationListener myListener = new MyLocationListener();
-    public MyLocationListener myListener = new MyLocationListener();
+    public MyLocationListener myListener = new MyLocationListener(MapActivity.this);
     
     public void getLoc() {
         LocationClientOption option = new LocationClientOption();
@@ -80,8 +80,7 @@ public class MapActivity extends Activity{
             .setPositiveButton("确定", null)
             .setCancelable(true)
             .show();
-
-            */
+		*/
             Toast toast = Toast.makeText(MapActivity.this, myListener.locationSb, Toast.LENGTH_SHORT); 
             toast.show();
         }
