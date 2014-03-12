@@ -2,6 +2,7 @@ package lz.test;
 import android.app.Activity;  
 import android.content.res.Configuration;  
 import android.os.Bundle;  
+import android.util.Log;
 import android.view.Menu;  
 import android.widget.FrameLayout;  
 import android.widget.Toast;  
@@ -24,19 +25,38 @@ import com.baidu.location.GeofenceClient;
 import com.baidu.location.GeofenceClient.OnAddBDGeofencesResultListener;
 import com.baidu.location.GeofenceClient.OnGeofenceTriggerListener;
 import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
+import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
+	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
 
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
+    
+    public void getLoc() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationMode.Hight_Accuracy);//设置定位模式
+        option.setCoorType("bd09ll");//返回的定位结果是百度经纬度，默认值gcj02
+        option.setScanSpan(5000);
+        option.setIsNeedAddress(true);//返回的定位结果包含地址信息
+        option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
+        mLocationClient.setLocOption(option); 
+    }
 
     @Override  
     public void onCreate(Bundle savedInstanceState){  
         super.onCreate(savedInstanceState);  
         mBMapMan=new BMapManager(getApplication());  
-        mBMapMan.init("KyBbknEZgtH41rYQDdTjkS2U", null);    
+        mBMapMan.init(mK, null);    
+        
+        mLocationClient = new LocationClient(getApplication());
+        mLocationClient.setAccessKey(mK);
+        mLocationClient.registerLocationListener(myListener);
+        
+        getLoc();
+
         //注意：请在试用setContentView前初始化BMapManager对象，否则会报错  
         setContentView(R.layout.activity_main);  
         mMapView=(MapView)findViewById(R.id.bmapsView);  
@@ -48,6 +68,14 @@ public class MapActivity extends Activity{
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
+
+        if (mLocationClient != null && false == mLocationClient.isStarted()) {
+            mLocationClient.requestLocation();
+            mLocationClient.start();
+            Log.e("test", "success");
+        }
+        else
+            Log.e("LocSDK3", "locClient is null or not started");
     }  
 
     @Override  
