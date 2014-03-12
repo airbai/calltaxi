@@ -32,7 +32,7 @@ public class MapActivity extends Activity{
 	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
-
+    
     public LocationClient mLocationClient = null;
  //   public BDLocationListener myListener = new MyLocationListener();
     public MyLocationListener myListener = new MyLocationListener();
@@ -70,16 +70,20 @@ public class MapActivity extends Activity{
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
+        
+
 
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
             mLocationClient.start();
-         	new AlertDialog.Builder(MapActivity.this).setMessage(myListener.locationSb.toString()+ " null")
+       /*  	new AlertDialog.Builder(MapActivity.this).setMessage(myListener.locationSb)
             .setPositiveButton("确定", null)
             .setCancelable(true)
             .show();
 
-            Log.e("fuck", "success");
+            */
+            Toast toast = Toast.makeText(MapActivity.this, myListener.locationSb, Toast.LENGTH_SHORT); 
+            toast.show();
         }
         else
             Log.e("LocSDK3", "locClient is null or not started");

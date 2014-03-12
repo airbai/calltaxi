@@ -2,12 +2,14 @@ package lz.test;
 
 import android.app.AlertDialog;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 
 public class MyLocationListener implements BDLocationListener {
 	
-	 public StringBuffer locationSb;
+	 public String locationSb = "gan a";
 
 	 public void onReceiveLocation(BDLocation location) {
 		 if (location == null)
@@ -34,7 +36,7 @@ public class MyLocationListener implements BDLocationListener {
 			 sb.append(location.getAddrStr());
 		 }
 		 Log.e("test",sb.toString());
-		 locationSb = sb;
+		 locationSb = sb.toString();
 	}    
     
 	public void onReceivePoi(BDLocation poiLocation) {
