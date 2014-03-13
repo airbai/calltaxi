@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Configuration;  
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;  
 import android.util.Log;
 import android.view.Menu;  
@@ -16,6 +17,7 @@ import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapPoi;  
 import com.baidu.mapapi.map.MapView;  
 import com.baidu.mapapi.map.MyLocationOverlay;
+import com.baidu.mapapi.map.OverlayItem;
 import com.baidu.platform.comapi.basestruct.GeoPoint;  
 
 import com.baidu.location.BDLocation;
@@ -33,7 +35,7 @@ import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
 import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
-	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
+	public String mK = "ePWZhuggCUg8gGZG590ogmtb";
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
     public LocationClient mLocationClient = null;
@@ -99,6 +101,46 @@ public class MapActivity extends Activity{
         mMapView.getOverlays().add(myLocationOverlay);
         mMapView.refresh();
         mMapView.getController().animateTo(new GeoPoint((int)( 30.19 * 1e6),(int)(120.28 * 1e6)));
+        
+        
+        double mLat1 = 30.3205910000;
+        double mLon1 = 120.3497580000;  
+        double mLat2 = 30.3198430000;  
+        double mLon2 = 120.3593520000;  
+        double mLat3 = 30.3270600000;  
+        double mLon3 = 120.3958800000;  
+        // 用给定的经纬度构造GeoPoint，单位是微度 (度 * 1E6)  
+        GeoPoint p1 = new GeoPoint((int) (mLat1 * 1E6), (int) (mLon1 * 1E6));  
+        GeoPoint p2 = new GeoPoint((int) (mLat2 * 1E6), (int) (mLon2 * 1E6));  
+        GeoPoint p3 = new GeoPoint((int) (mLat3 * 1E6), (int) (mLon3 * 1E6));  
+        //准备overlay图像数据，根据实情情况修复  
+        Drawable mark= getResources().getDrawable(R.drawable.icon_marka);  
+        //用OverlayItem准备Overlay数据  
+        OverlayItem item1 = new OverlayItem(p1,"item1","item1");  
+        //使用setMarker()方法设置overlay图片,如果不设置则使用构建ItemizedOverlay时的默认设置  
+        OverlayItem item2 = new OverlayItem(p2,"item2","item2");  
+        item2.setMarker(mark);  
+        OverlayItem item3 = new OverlayItem(p3,"item3","item3");  
+           
+        //创建IteminizedOverlay  
+        TaxiItemizedOverlay itemOverlay = new TaxiItemizedOverlay(mark, mMapView);  
+        //将IteminizedOverlay添加到MapView中  
+          
+        //mMapView.getOverlays().clear();  
+        mMapView.getOverlays().add(itemOverlay);  
+           
+        //现在所有准备工作已准备好，使用以下方法管理overlay.  
+        //添加overlay, 当批量添加Overlay时使用addItem(List<OverlayItem>)效率更高  
+        itemOverlay.addItem(item1);  
+        itemOverlay.addItem(item2);  
+        itemOverlay.addItem(item3);  
+        mMapView.refresh();  
+        //删除overlay .  
+        //itemOverlay.removeItem(itemOverlay.getItem(0));  
+        //mMapView.refresh();  
+        //清除overlay  
+        // itemOverlay.removeAll();  
+        // mMapView.refresh();  
 
     }  
      public class MyLocationListener implements BDLocationListener {
