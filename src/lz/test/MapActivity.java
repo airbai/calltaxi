@@ -9,10 +9,12 @@ import android.view.Menu;
 import android.widget.FrameLayout;  
 import android.widget.Toast;  
 import com.baidu.mapapi.BMapManager;  
+import com.baidu.mapapi.map.LocationData;
 import com.baidu.mapapi.map.MKMapViewListener;  
 import com.baidu.mapapi.map.MapController;  
 import com.baidu.mapapi.map.MapPoi;  
 import com.baidu.mapapi.map.MapView;  
+import com.baidu.mapapi.map.MyLocationOverlay;
 import com.baidu.platform.comapi.basestruct.GeoPoint;  
 
 import com.baidu.location.BDLocation;
@@ -30,8 +32,7 @@ import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
 import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
-	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
-
+	public String mK = "ePWZhuggCUg8gGZG590ogmtb";
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
     
@@ -72,6 +73,8 @@ public class MapActivity extends Activity{
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
         
+
+
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
             mLocationClient.start();
@@ -86,6 +89,17 @@ public class MapActivity extends Activity{
         }
         else
             Log.e("LocSDK3", "locClient is null or not started");
+      
+        MyLocationOverlay myLocationOverlay = new MyLocationOverlay(mMapView);
+        LocationData locData = new LocationData();
+        locData.latitude = 30;
+        locData.longitude = 120;
+        myLocationOverlay.setData(locData);
+        mMapView.getOverlays().add(myLocationOverlay);
+        mMapView.refresh();
+        mMapView.getController().animateTo(new GeoPoint((int)(locData.latitude*1e6),
+        (int)(locData.longitude* 1e6)));
+
     }  
 
     @Override  
