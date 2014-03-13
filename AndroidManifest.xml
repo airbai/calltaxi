@@ -54,7 +54,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="ePWZhuggCUg8gGZG590ogmtb"/>
+        <meta-data android:name="com.baidu.lbsapi.API_KEY" android:value="KyBbknEZgtH41rYQDdTjkS2U"/>
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
         <activity
             android:name="lz.test.LoginActivity">

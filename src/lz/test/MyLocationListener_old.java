@@ -7,13 +7,23 @@ import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.map.LocationData;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationOverlay;
+import com.baidu.platform.comapi.basestruct.GeoPoint;
 
-public class MyLocationListener implements BDLocationListener {
+public class MyLocationListener_old implements BDLocationListener {
 	
 	 public Context context;
-	 
-	 public MyLocationListener(Context tmp) {
+	 public MapView mapview;
+
+	 public MyLocationListener_old(Context tmp) {
 		 context = tmp;
+	 }
+	 
+	 public MyLocationListener_old(Context tmp, MapView tmp2) {
+		 context = tmp;
+		 mapview = tmp2;
 	 }
 
 	 public void onReceiveLocation(BDLocation location) {
@@ -40,7 +50,7 @@ public class MyLocationListener implements BDLocationListener {
 			 sb.append("\naddr : ");
 			 sb.append(location.getAddrStr());
 		 }
-	//	 Log.e("test",sb.toString());
+
 		 Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
 		 toast.show();
 	}    

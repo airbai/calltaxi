@@ -32,12 +32,12 @@ import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
 import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
-	public String mK = "ePWZhuggCUg8gGZG590ogmtb";
+	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
-    
     public LocationClient mLocationClient = null;
-    public MyLocationListener myListener = new MyLocationListener(MapActivity.this);
+    public MyLocationListener myListener = null;
+    public MyLocationOverlay myLocationOverlay = null;
     
     public void getLoc() {
         LocationClientOption option = new LocationClientOption();
@@ -54,6 +54,10 @@ public class MapActivity extends Activity{
         super.onCreate(savedInstanceState);  
         mBMapMan=new BMapManager(getApplication());  
         mBMapMan.init(mK, null);    
+
+        myListener = new MyLocationListener(MapActivity.this, 
+    		(MapView)findViewById(R.id.bmapsView));
+       // myListener = new MyLocationListener(MapActivity.this);
         
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.setAccessKey(mK);
@@ -68,39 +72,109 @@ public class MapActivity extends Activity{
         //设置启用内置的缩放控件  
         MapController mMapController=mMapView.getController();  
         // 得到mMapView的控制权,可以用它控制和驱动平移和缩放  
-        GeoPoint point =new GeoPoint((int)(39.915* 1E6),(int)(116.404* 1E6));  
+        GeoPoint point = new GeoPoint((int)(39.915* 1E6),(int)(116.404* 1E6));  
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
-        
-
 
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
             mLocationClient.start();
-       /*  	new AlertDialog.Builder(MapActivity.this).setMessage(myListener.locationSb)
-            .setPositiveButton("确定", null)
-            .setCancelable(true)
-            .show();
-		*/
- /*           Toast toast = Toast.makeText(MapActivity.this, myListener.locationSb, Toast.LENGTH_SHORT); 
-            toast.show();
-            */
         }
         else
             Log.e("LocSDK3", "locClient is null or not started");
+
       
-        MyLocationOverlay myLocationOverlay = new MyLocationOverlay(mMapView);
+        myLocationOverlay = new MyLocationOverlay(mMapView);
         LocationData locData = new LocationData();
-        locData.latitude = 30;
-        locData.longitude = 120;
+        locData.latitude = 30.3;
+        locData.longitude = 120.2;
         myLocationOverlay.setData(locData);
         mMapView.getOverlays().add(myLocationOverlay);
         mMapView.refresh();
-        mMapView.getController().animateTo(new GeoPoint((int)(locData.latitude*1e6),
-        (int)(locData.longitude* 1e6)));
+        mMapView.getController().animateTo(new GeoPoint((int)( 30.19 * 1e6),(int)(120.28 * 1e6)));
 
     }  
+     public class MyLocationListener implements BDLocationListener {
+	
+                 public Context context;
+                 public MapView mapview;
+
+                 public MyLocationListener(Context tmp) {
+                         context = tmp;
+                 }
+                 
+                 public MyLocationListener(Context tmp, MapView tmp2) {
+                         context = tmp;
+                         mapview = tmp2;
+                 }
+
+                 public void onReceiveLocation(BDLocation location) {
+                         if (location == null)
+                                 return ;
+                         StringBuffer sb = new StringBuffer(256);
+                         sb.append("time : ");
+                         sb.append(location.getTime());
+                         sb.append("\nerror code : ");
+                         sb.append(location.getLocType());
+                         sb.append("\nlatitude : ");
+                         sb.append(location.getLatitude());
+                         sb.append("\nlontitude : ");
+                         sb.append(location.getLongitude());
+                         sb.append("\nradius : ");
+                         sb.append(location.getRadius());
+                         if (location.getLocType() == BDLocation.TypeGpsLocation){
+                                 sb.append("\nspeed : ");
+                                 sb.append(location.getSpeed());
+                                 sb.append("\nsatellite : ");
+                                 sb.append(location.getSatelliteNumber());
+                         } 
+                         else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+                                 sb.append("\naddr : ");
+                                 sb.append(location.getAddrStr());
+                         }
+                         
+                        LocationData locData = new LocationData();
+                        locData.latitude = location.getLatitude();
+                        locData.longitude = location.getLongitude();
+                        locData.direction = location.getDirection();
+                        myLocationOverlay.setData(locData);
+                    //    myLocationOverlay.setMarker(arg0);
+                        mMapView.refresh();
+                        
+                         Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
+                         toast.show();
+                }    
+            
+                public void onReceivePoi(BDLocation poiLocation) {
+                        if (poiLocation == null)
+                    return ;
+
+                        StringBuffer sb = new StringBuffer(256);
+                        sb.append("Poi time : ");
+                        sb.append(poiLocation.getTime());
+                        sb.append("\nerror code : ");
+                        sb.append(poiLocation.getLocType());
+                        sb.append("\nlatitude : ");
+                        sb.append(poiLocation.getLatitude());
+                        sb.append("\nlontitude : ");
+                        sb.append(poiLocation.getLongitude());
+                        sb.append("\nradius : ");
+                        sb.append(poiLocation.getRadius());
+                        if (poiLocation.getLocType() == BDLocation.TypeNetWorkLocation){
+                            sb.append("\naddr : ");
+                            sb.append(poiLocation.getAddrStr());
+                        }
+                        if(poiLocation.hasPoi()) {
+                            sb.append("\nPoi:");
+                                sb.append(poiLocation.getPoi());
+                         }
+                         else 
+                                 sb.append("noPoi information");
+
+                         Log.e("test",sb.toString());
+                }
+        }
 
     @Override  
     protected void onDestroy(){  
