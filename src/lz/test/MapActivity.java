@@ -31,6 +31,7 @@ import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
 	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
+
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
     
@@ -71,8 +72,6 @@ public class MapActivity extends Activity{
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
         
-
-
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
             mLocationClient.start();
