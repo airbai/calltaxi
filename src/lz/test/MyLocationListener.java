@@ -40,7 +40,7 @@ public class MyLocationListener implements BDLocationListener {
 			 sb.append("\naddr : ");
 			 sb.append(location.getAddrStr());
 		 }
-		 Log.e("test",sb.toString());
+	//	 Log.e("test",sb.toString());
 		 Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
 		 toast.show();
 	}    
