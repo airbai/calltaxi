@@ -2,15 +2,19 @@ package lz.test;
 import android.app.Activity;  
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;  
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;  
 import android.util.Log;
 import android.view.Menu;  
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;  
 import android.widget.Toast;  
 import com.baidu.mapapi.BMapManager;  
+import com.baidu.mapapi.map.ItemizedOverlay;
 import com.baidu.mapapi.map.LocationData;
 import com.baidu.mapapi.map.MKMapViewListener;  
 import com.baidu.mapapi.map.MapController;  
@@ -35,7 +39,7 @@ import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
 import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
-	public String mK = "ePWZhuggCUg8gGZG590ogmtb";
+	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
     public LocationClient mLocationClient = null;
@@ -79,11 +83,18 @@ public class MapActivity extends Activity{
         GeoPoint point = new GeoPoint((int)(39.915* 1E6),(int)(116.404* 1E6));  
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
-        mMapController.setZoom(12);//设置地图zoom级别   	super.On
+        mMapController.setZoom(12);//设置地图zoom级别
         
         Point cent = mMapView.getCenterPixel();
-        Toast toast = Toast.makeText(MapActivity.this, cent.x + " " + cent.y + "\n", Toast.LENGTH_LONG);
+        String pr = cent.x + " " + cent.y + "\n";
+ /*       Toast toast = Toast.makeText(MapActivity.this, cent.x + " " + cent.y + "\n", Toast.LENGTH_LONG);
         toast.show();
+        */
+      /*  new AlertDialog.Builder(MapActivity.this).setMessage(pr)
+        .setPositiveButton("确定", null)
+        .setCancelable(true)
+        .show();
+        */
 
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
@@ -92,7 +103,8 @@ public class MapActivity extends Activity{
         else
             Log.e("LocSDK3", "locClient is null or not started");
 
-      
+
+// 		自己的位置图层
         myLocationOverlay = new MyLocationOverlay(mMapView);
         LocationData locData = new LocationData();
         locData.latitude = 30.3;
@@ -100,9 +112,9 @@ public class MapActivity extends Activity{
         myLocationOverlay.setData(locData);
         mMapView.getOverlays().add(myLocationOverlay);
         mMapView.refresh();
-        mMapView.getController().animateTo(new GeoPoint((int)( 30.19 * 1e6),(int)(120.28 * 1e6)));
+        mMapView.getController().animateTo(new GeoPoint((int)( locData.latitude * 1e6),(int)(locData.longitude * 1e6)));
         
-        
+//		司机的自定义图层
         double mLat1 = 30.3205910000;
         double mLon1 = 120.3497580000;  
         double mLat2 = 30.3198430000;  
@@ -114,6 +126,7 @@ public class MapActivity extends Activity{
         GeoPoint p2 = new GeoPoint((int) (mLat2 * 1E6), (int) (mLon2 * 1E6));  
         GeoPoint p3 = new GeoPoint((int) (mLat3 * 1E6), (int) (mLon3 * 1E6));  
         //准备overlay图像数据，根据实情情况修复  
+
         Drawable mark= getResources().getDrawable(R.drawable.icon_marka);  
         //用OverlayItem准备Overlay数据  
         OverlayItem item1 = new OverlayItem(p1,"item1","item1");  
@@ -123,6 +136,7 @@ public class MapActivity extends Activity{
         OverlayItem item3 = new OverlayItem(p3,"item3","item3");  
            
         //创建IteminizedOverlay  
+        //ItemizedOverlay itemOverlay = new ItemizedOverlay(mark ,mMapView);
         TaxiItemizedOverlay itemOverlay = new TaxiItemizedOverlay(mark, mMapView);  
         //将IteminizedOverlay添加到MapView中  
           
@@ -135,14 +149,25 @@ public class MapActivity extends Activity{
         itemOverlay.addItem(item2);  
         itemOverlay.addItem(item3);  
         mMapView.refresh();  
-        //删除overlay .  
-        //itemOverlay.removeItem(itemOverlay.getItem(0));  
-        //mMapView.refresh();  
-        //清除overlay  
-        // itemOverlay.removeAll();  
-        // mMapView.refresh();  
-
+        /*
+        删除overlay .  
+        itemOverlay.removeItem(itemOverlay.getItem(0));  
+        mMapView.refresh();  
+        清除overlay  
+        itemOverlay.removeAll();  
+        mMapView.refresh();  
+        */
+        
+        // 做Button 监听
+        Button btnCommit = (Button) findViewById(R.id.CommitButton);
+        btnCommit.setOnClickListener( new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MapActivity.this, CommitActivity.class));
+			}
+		});
     }  
+
      public class MyLocationListener implements BDLocationListener {
 	
                  public Context context;
@@ -194,8 +219,8 @@ public class MapActivity extends Activity{
                         pr = pr + "\n" + Double.toString(mapCenter.getLongitudeE6()/1e6) + "\n";
              
 
-                         Toast toast = Toast.makeText(context, pr, Toast.LENGTH_LONG);
-                         toast.show();
+                        Toast toast = Toast.makeText(context, pr, Toast.LENGTH_SHORT);
+                        toast.show();
                 }    
             
                 public void onReceivePoi(BDLocation poiLocation) {
@@ -227,6 +252,7 @@ public class MapActivity extends Activity{
                          Log.e("test",sb.toString());
                 }
         }
+     
 
     @Override  
     protected void onDestroy(){  
@@ -241,6 +267,9 @@ public class MapActivity extends Activity{
     @Override  
     protected void onPause(){  
             mMapView.onPause();  
+            if(null != mLocationClient && true == mLocationClient.isStarted())
+            	mLocationClient.stop();
+
             if(mBMapMan!=null){  
                    mBMapMan.stop();  
             }  

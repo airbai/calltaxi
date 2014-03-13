@@ -1,9 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
-        android:orientation="vertical"  
-        android:layout_width="fill_parent"  
-        android:layout_height="fill_parent">  
-        <com.baidu.mapapi.map.MapView android:id="@+id/bmapsView"  
-                android:layout_width="fill_parent"  
-                android:layout_height="fill_parent"  
-                android:clickable="true" />  
-</LinearLayout>  
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+    <LinearLayout
+            android:id="@+id/bottom_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+            <Button
+                android:id="@+id/CommitButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:text="@string/commit"/>
+         </LinearLayout>
+         <com.baidu.mapapi.map.MapView
+            android:id="@+id/bmapsView"  
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"  
+            android:clickable="true"
+            android:layout_above="@id/bottom_panel"/>
+</RelativeLayout>

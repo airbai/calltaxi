@@ -13,15 +13,15 @@ import com.baidu.platform.comapi.basestruct.GeoPoint;
 
 public class TaxiItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 
-	private Context context;
-	
+	private Context context = null;
+
 	public TaxiItemizedOverlay(Drawable mark,MapView mapView){  
             super(mark,mapView);  
 		// TODO Auto-generated constructor stub
 	}
 	protected boolean onTap(int index) {  
         //在此处理item点击事件  
-		Toast.makeText(this.context, "fuck", Toast.LENGTH_SHORT).show();
+		Toast.makeText(context, "fuck", Toast.LENGTH_SHORT).show();
         return true; 
     } 
     public boolean onTap(GeoPoint pt, MapView mapView){  
