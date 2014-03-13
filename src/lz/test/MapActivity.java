@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Configuration;  
+import android.graphics.Point;
 import android.os.Bundle;  
 import android.util.Log;
 import android.view.Menu;  
@@ -67,15 +68,20 @@ public class MapActivity extends Activity{
 
         //注意：请在试用setContentView前初始化BMapManager对象，否则会报错  
         setContentView(R.layout.activity_main);  
-        mMapView=(MapView)findViewById(R.id.bmapsView);  
+        mMapView = (MapView)findViewById(R.id.bmapsView);  
+
         mMapView.setBuiltInZoomControls(true);  
         //设置启用内置的缩放控件  
-        MapController mMapController=mMapView.getController();  
+        MapController mMapController = mMapView.getController();  
         // 得到mMapView的控制权,可以用它控制和驱动平移和缩放  
         GeoPoint point = new GeoPoint((int)(39.915* 1E6),(int)(116.404* 1E6));  
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别   	super.On
+        
+        Point cent = mMapView.getCenterPixel();
+        Toast toast = Toast.makeText(MapActivity.this, cent.x + " " + cent.y + "\n", Toast.LENGTH_LONG);
+        toast.show();
 
         if (mLocationClient != null && false == mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
@@ -139,16 +145,20 @@ public class MapActivity extends Activity{
                         locData.longitude = location.getLongitude();
                         locData.direction = location.getDirection();
                         myLocationOverlay.setData(locData);
-                    //    myLocationOverlay.setMarker(arg0);
+
                         mMapView.refresh();
-                        
-                         Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
+                        GeoPoint mapCenter = mMapView.getMapCenter();
+                        String pr = sb.toString() + "\n" + Double.toString(mapCenter.getLatitudeE6()/1e6);
+                        pr = pr + "\n" + Double.toString(mapCenter.getLongitudeE6()/1e6) + "\n";
+             
+
+                         Toast toast = Toast.makeText(context, pr, Toast.LENGTH_LONG);
                          toast.show();
                 }    
             
                 public void onReceivePoi(BDLocation poiLocation) {
                         if (poiLocation == null)
-                    return ;
+                        	return ;
 
                         StringBuffer sb = new StringBuffer(256);
                         sb.append("Poi time : ");
