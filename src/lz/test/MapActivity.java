@@ -81,8 +81,9 @@ public class MapActivity extends Activity{
             .setCancelable(true)
             .show();
 		*/
-            Toast toast = Toast.makeText(MapActivity.this, myListener.locationSb, Toast.LENGTH_SHORT); 
+ /*           Toast toast = Toast.makeText(MapActivity.this, myListener.locationSb, Toast.LENGTH_SHORT); 
             toast.show();
+            */
         }
         else
             Log.e("LocSDK3", "locClient is null or not started");

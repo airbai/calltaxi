@@ -10,7 +10,6 @@ import com.baidu.location.BDLocationListener;
 
 public class MyLocationListener implements BDLocationListener {
 	
-	 public String locationSb = "gan a";
 	 public Context context;
 	 
 	 public MyLocationListener(Context tmp) {
@@ -42,7 +41,6 @@ public class MyLocationListener implements BDLocationListener {
 			 sb.append(location.getAddrStr());
 		 }
 		 Log.e("test",sb.toString());
-		 locationSb = sb.toString();
 		 Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
 		 toast.show();
 	}    
