@@ -108,7 +108,6 @@ public class MapActivity extends Activity{
     }
     
     public void addDriverOverlay() {
-    	
 //		司机的自定义图层
         double mLat1 = 30.3205910000;
         double mLon1 = 120.3497580000;  
