@@ -43,19 +43,26 @@ import com.baidu.location.GeofenceClient.OnRemoveBDGeofencesResultListener;
 import com.baidu.location.LocationClientOption.LocationMode;
        
 public class MapActivity extends Activity{  
-	public String mK = "KyBbknEZgtH41rYQDdTjkS2U";
+
+	public String mk = null;
+	public String prefix = null;
     public BMapManager mBMapMan = null;
     public MapView mMapView = null;
     public LocationClient mLocationClient = null;
     public MyLocationListener myListener = null;
     public MyLocationOverlay myLocationOverlay = null;
     public ItemizedOverlay itemOverlay= null;
+
     @Override  
     public void onCreate(Bundle savedInstanceState){  
+    	
+    	mk = ((GateApplication)getApplication()).mk;
+	    prefix = ((GateApplication)getApplication()).prefix ;
+    	
         super.onCreate(savedInstanceState);  
 
         mBMapMan=new BMapManager(getApplication());  
-        mBMapMan.init(mK, null);    
+        mBMapMan.init(mk, null);    
         getLoc();
 
         setContentView(R.layout.activity_main);  
@@ -85,7 +92,7 @@ public class MapActivity extends Activity{
     				Thread.sleep(2000);
     				itemOverlay.removeAll();
     				
-    				String url = "http://10.0.2.2/getDriver.php";
+    				String url = prefix + "getDriver.php";
     				String ret = new HttpFunc().execute(url);
     				JSONArray json = new JSONArray(ret);
 
@@ -145,7 +152,7 @@ public class MapActivity extends Activity{
        // myListener = new MyLocationListener(MapActivity.this);
         
         mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.setAccessKey(mK);
+        mLocationClient.setAccessKey(mk);
         mLocationClient.registerLocationListener(myListener);
         LocationClientOption option = new LocationClientOption();
 

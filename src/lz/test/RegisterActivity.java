@@ -12,8 +12,10 @@ public class RegisterActivity extends Activity {
 	
 	public Button btnRegisterBack, btnFinishRegister;
 	public EditText inputRegisterId, inputRegisterPwd, inputRegisterRePwd;
+	public String prefix = null;
 	
     public void onCreate(Bundle savedInstanceState){  
+    	prefix = ((GateApplication)getApplication()).mk;
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_register);
     	
@@ -44,7 +46,7 @@ public class RegisterActivity extends Activity {
                 	return ;
                 }
                 
-                String url = "http://10.0.2.2/register.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
+                String url = prefix + "register.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
                 Log.e("test", url);
                 String ret = new HttpFunc().execute(url);
                 Log.e("ret", ret);

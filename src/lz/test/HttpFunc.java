@@ -19,6 +19,7 @@ import android.util.Log;
 
 
 public class HttpFunc {
+
 	@SuppressLint("NewApi")
 	public String execute(String url) {
 		String result = "";

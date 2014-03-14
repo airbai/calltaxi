@@ -14,8 +14,8 @@ import com.baidu.platform.comapi.basestruct.GeoPoint;
 
 public class MyLocationListener_old implements BDLocationListener {
 	
-	 public Context context;
-	 public MapView mapview;
+	 public Context context = null;
+	 public MapView mapview = null;
 
 	 public MyLocationListener_old(Context tmp) {
 		 context = tmp;

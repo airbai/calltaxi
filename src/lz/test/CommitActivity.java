@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class CommitActivity extends Activity {
 
+	public String prefix = null;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+
+		prefix = ((GateApplication)getApplication()).prefix;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_commit);
 
@@ -22,8 +27,9 @@ public class CommitActivity extends Activity {
 			}
 		});
 
-		EditText address = (EditText)findViewById(R.id.address);
-
+		TextView address = (TextView)findViewById(R.id.address);
+		address.setText("hao de!");
+	//	address.setText();
 	}
 
 	@Override
