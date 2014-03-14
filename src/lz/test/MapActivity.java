@@ -46,34 +46,43 @@ public class MapActivity extends Activity{
     public MyLocationListener myListener = null;
     public MyLocationOverlay myLocationOverlay = null;
     
-    public void getLoc() {
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(LocationMode.Hight_Accuracy);//设置定位模式
-        option.setCoorType("bd09ll");//返回的定位结果是百度经纬度，默认值gcj02
-        option.setScanSpan(5000);
-        option.setIsNeedAddress(true);//返回的定位结果包含地址信息
-        option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
-        mLocationClient.setLocOption(option); 
-    }
-
     @Override  
     public void onCreate(Bundle savedInstanceState){  
         super.onCreate(savedInstanceState);  
+
         mBMapMan=new BMapManager(getApplication());  
         mBMapMan.init(mK, null);    
-
-        myListener = new MyLocationListener(MapActivity.this, 
-    		(MapView)findViewById(R.id.bmapsView));
-       // myListener = new MyLocationListener(MapActivity.this);
-        
-        mLocationClient = new LocationClient(getApplicationContext());
-        mLocationClient.setAccessKey(mK);
-        mLocationClient.registerLocationListener(myListener);
-        
+        // 开始定位
         getLoc();
 
         //注意：请在试用setContentView前初始化BMapManager对象，否则会报错  
         setContentView(R.layout.activity_main);  
+        
+        mapView();
+
+        Point cent = mMapView.getCenterPixel();
+        String pr = cent.x + " " + cent.y + "\n";
+
+      /*  new AlertDialog.Builder(MapActivity.this).setMessage(pr)
+        .setPositiveButton("确定", null)
+        .setCancelable(true)
+        .show();
+        */
+        
+        addSelfOverlay();
+        addDriverOverlay();
+        
+        // 做Button 监听
+        Button btnCommit = (Button) findViewById(R.id.CommitButton);
+        btnCommit.setOnClickListener( new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MapActivity.this, CommitActivity.class));
+			}
+		});
+    }  
+    
+    public void mapView() {
         mMapView = (MapView)findViewById(R.id.bmapsView);  
 
         mMapView.setBuiltInZoomControls(true);  
@@ -84,26 +93,9 @@ public class MapActivity extends Activity{
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
         mMapController.setZoom(12);//设置地图zoom级别
-        
-        Point cent = mMapView.getCenterPixel();
-        String pr = cent.x + " " + cent.y + "\n";
- /*       Toast toast = Toast.makeText(MapActivity.this, cent.x + " " + cent.y + "\n", Toast.LENGTH_LONG);
-        toast.show();
-        */
-      /*  new AlertDialog.Builder(MapActivity.this).setMessage(pr)
-        .setPositiveButton("确定", null)
-        .setCancelable(true)
-        .show();
-        */
-
-        if (mLocationClient != null && false == mLocationClient.isStarted()) {
-            mLocationClient.requestLocation();
-            mLocationClient.start();
-        }
-        else
-            Log.e("LocSDK3", "locClient is null or not started");
-
-
+    }
+    
+    public void addSelfOverlay() {
 // 		自己的位置图层
         myLocationOverlay = new MyLocationOverlay(mMapView);
         LocationData locData = new LocationData();
@@ -113,7 +105,10 @@ public class MapActivity extends Activity{
         mMapView.getOverlays().add(myLocationOverlay);
         mMapView.refresh();
         mMapView.getController().animateTo(new GeoPoint((int)( locData.latitude * 1e6),(int)(locData.longitude * 1e6)));
-        
+    }
+    
+    public void addDriverOverlay() {
+    	
 //		司机的自定义图层
         double mLat1 = 30.3205910000;
         double mLon1 = 120.3497580000;  
@@ -157,16 +152,32 @@ public class MapActivity extends Activity{
         itemOverlay.removeAll();  
         mMapView.refresh();  
         */
+    }
+
+    public void getLoc() {
+        myListener = new MyLocationListener(MapActivity.this, 
+    		(MapView)findViewById(R.id.bmapsView));
+       // myListener = new MyLocationListener(MapActivity.this);
         
-        // 做Button 监听
-        Button btnCommit = (Button) findViewById(R.id.CommitButton);
-        btnCommit.setOnClickListener( new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(MapActivity.this, CommitActivity.class));
-			}
-		});
-    }  
+        mLocationClient = new LocationClient(getApplicationContext());
+        mLocationClient.setAccessKey(mK);
+        mLocationClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+
+        option.setLocationMode(LocationMode.Hight_Accuracy);//设置定位模式
+        option.setCoorType("bd09ll");//返回的定位结果是百度经纬度，默认值gcj02
+        option.setScanSpan(5000);
+        option.setIsNeedAddress(true);//返回的定位结果包含地址信息
+        option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
+        mLocationClient.setLocOption(option); 
+
+        if (mLocationClient != null && false == mLocationClient.isStarted()) {
+            mLocationClient.requestLocation();
+            mLocationClient.start();
+        }
+        else
+            Log.e("LocSDK3", "locClient is null or not started");
+    }
 
      public class MyLocationListener implements BDLocationListener {
 	

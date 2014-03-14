@@ -17,7 +17,7 @@
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
                 android:text="@string/commit"/>
-         </LinearLayout>
+    </LinearLayout>
          <com.baidu.mapapi.map.MapView
             android:id="@+id/bmapsView"  
             android:layout_width="fill_parent"  
