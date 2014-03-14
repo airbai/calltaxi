@@ -6,6 +6,7 @@ public class GateApplication extends Application {
 
 	public String mk = "";
 	public String prefix = "";
+	double aimLati, aimLong;
 
 	@Override
 	public void onCreate() {

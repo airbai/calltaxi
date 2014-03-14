@@ -76,6 +76,11 @@ public class MapActivity extends Activity{
         btnCommit.setOnClickListener( new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				GateApplication app = (GateApplication)getApplication();
+                GeoPoint mapCenter = mMapView.getMapCenter();
+                app.aimLati = mapCenter.getLatitudeE6()/1e6;
+                app.aimLong = mapCenter.getLongitudeE6()/1e6;
+
 				startActivity(new Intent(MapActivity.this, CommitActivity.class));
 			}
 		});
