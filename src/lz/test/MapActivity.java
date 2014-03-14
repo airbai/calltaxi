@@ -59,16 +59,6 @@ public class MapActivity extends Activity{
         setContentView(R.layout.activity_main);  
         
         mapView();
-
-        Point cent = mMapView.getCenterPixel();
-        String pr = cent.x + " " + cent.y + "\n";
-
-      /*  new AlertDialog.Builder(MapActivity.this).setMessage(pr)
-        .setPositiveButton("确定", null)
-        .setCancelable(true)
-        .show();
-        */
-        
         addSelfOverlay();
         addDriverOverlay();
         
@@ -80,7 +70,25 @@ public class MapActivity extends Activity{
 				startActivity(new Intent(MapActivity.this, CommitActivity.class));
 			}
 		});
+        
+        new Thread(new Update()).start();
     }  
+    
+    public class Update implements Runnable {
+    	@Override
+    	public void run() {
+    		while(true) {
+    			try {
+    				Thread.sleep(2000);
+    				Toast toast = Toast.makeText(MapActivity.this, "success", Toast.LENGTH_LONG);
+    				toast.show();
+    			} catch (Exception e) {
+    				e.printStackTrace();
+    			}
+    		}
+    	}
+    	
+    }
     
     public void mapView() {
         mMapView = (MapView)findViewById(R.id.bmapsView);  
@@ -109,6 +117,7 @@ public class MapActivity extends Activity{
     
     public void addDriverOverlay() {
 //		司机的自定义图层
+    	/*
         double mLat1 = 30.3205910000;
         double mLon1 = 120.3497580000;  
         double mLat2 = 30.3198430000;  
@@ -121,7 +130,6 @@ public class MapActivity extends Activity{
         GeoPoint p3 = new GeoPoint((int) (mLat3 * 1E6), (int) (mLon3 * 1E6));  
         //准备overlay图像数据，根据实情情况修复  
 
-        Drawable mark= getResources().getDrawable(R.drawable.icon_marka);  
         //用OverlayItem准备Overlay数据  
         OverlayItem item1 = new OverlayItem(p1,"item1","item1");  
         //使用setMarker()方法设置overlay图片,如果不设置则使用构建ItemizedOverlay时的默认设置  
@@ -129,9 +137,12 @@ public class MapActivity extends Activity{
         item2.setMarker(mark);  
         OverlayItem item3 = new OverlayItem(p3,"item3","item3");  
            
+           */
         //创建IteminizedOverlay  
+
+        Drawable mark = getResources().getDrawable(R.drawable.icon_marka);  
         //ItemizedOverlay itemOverlay = new ItemizedOverlay(mark ,mMapView);
-        TaxiItemizedOverlay itemOverlay = new TaxiItemizedOverlay(mark, mMapView);  
+        ItemizedOverlay itemOverlay = new ItemizedOverlay(mark, mMapView);  
         //将IteminizedOverlay添加到MapView中  
           
         //mMapView.getOverlays().clear();  
@@ -139,9 +150,10 @@ public class MapActivity extends Activity{
            
         //现在所有准备工作已准备好，使用以下方法管理overlay.  
         //添加overlay, 当批量添加Overlay时使用addItem(List<OverlayItem>)效率更高  
-        itemOverlay.addItem(item1);  
+     /*   itemOverlay.addItem(item1);  
         itemOverlay.addItem(item2);  
         itemOverlay.addItem(item3);  
+        */
         mMapView.refresh();  
         /*
         删除overlay .  

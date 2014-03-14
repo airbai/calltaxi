@@ -51,8 +51,8 @@ public class MyLocationListener_old implements BDLocationListener {
 			 sb.append(location.getAddrStr());
 		 }
 
-		 Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
-		 toast.show();
+		// Toast toast = Toast.makeText(context, sb.toString(), Toast.LENGTH_LONG);
+		// toast.show();
 	}    
     
 	public void onReceivePoi(BDLocation poiLocation) {
