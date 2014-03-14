@@ -1,4 +1,7 @@
 package lz.test;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.Activity;  
 import android.app.AlertDialog;
 import android.content.Context;
@@ -80,7 +83,24 @@ public class MapActivity extends Activity{
     		while(true) {
     			try {
     				Thread.sleep(2000);
-    				Log.e("success","success");
+    				itemOverlay.removeAll();
+    				
+    				String url = "http://10.0.2.2/getDriver.php";
+    				String ret = new HttpFunc().execute(url);
+    				
+    				JSONArray json = new JSONArray(ret);
+    				Log.d("test", json.toString());
+    				double last = 0; 
+    				for(int i = 0 ;i < json.length(); i++) { 
+    					double value = json.getDouble(i);
+    					if(0 == i % 2)
+    						last = value;
+    					else {
+    						GeoPoint p1 = new GeoPoint((int) (last * 1E6), (int) (value * 1E6));  
+    						OverlayItem item = new OverlayItem(p1,"","");  
+    						itemOverlay.addItem(item);
+    					}
+    				}
                     mMapView.refresh();  
     			} 
     			catch (Exception e) {
@@ -115,29 +135,9 @@ public class MapActivity extends Activity{
     }
     
     public void addDriverOverlay() {
-    	/*
-        GeoPoint p1 = new GeoPoint((int) (mLat1 * 1E6), (int) (mLon1 * 1E6));  
-
-        OverlayItem item3 = new OverlayItem(p3,"item3","item3");  
-           
-        //创建IteminizedOverlay  
-
-         */
         Drawable mark = getResources().getDrawable(R.drawable.icon_marka);  
         itemOverlay = new ItemizedOverlay(mark, mMapView);  
-        
         mMapView.getOverlays().add(itemOverlay);  
-           
-        //添加overlay, 当批量添加Overlay时使用addItem(List<OverlayItem>)效率更高  
-     /*   itemOverlay.addItem(item1);  
-        */
-        mMapView.refresh();  
-        /*
-        mMapView.refresh();  
-        清除overlay  
-        itemOverlay.removeAll();  
-        mMapView.refresh();  
-        */
     }
 
     public void getLoc() {
