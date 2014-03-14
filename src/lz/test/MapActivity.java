@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;  
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;  
 import android.view.View;
@@ -45,17 +46,15 @@ public class MapActivity extends Activity{
     public LocationClient mLocationClient = null;
     public MyLocationListener myListener = null;
     public MyLocationOverlay myLocationOverlay = null;
-    
+    public ItemizedOverlay itemOverlay= null;
     @Override  
     public void onCreate(Bundle savedInstanceState){  
         super.onCreate(savedInstanceState);  
 
         mBMapMan=new BMapManager(getApplication());  
         mBMapMan.init(mK, null);    
-        // 开始定位
         getLoc();
 
-        //注意：请在试用setContentView前初始化BMapManager对象，否则会报错  
         setContentView(R.layout.activity_main);  
         
         mapView();
@@ -77,17 +76,18 @@ public class MapActivity extends Activity{
     public class Update implements Runnable {
     	@Override
     	public void run() {
+    		Looper.prepare();
     		while(true) {
     			try {
     				Thread.sleep(2000);
-    				Toast toast = Toast.makeText(MapActivity.this, "success", Toast.LENGTH_LONG);
-    				toast.show();
-    			} catch (Exception e) {
+    				Log.e("success","success");
+                    mMapView.refresh();  
+    			} 
+    			catch (Exception e) {
     				e.printStackTrace();
     			}
     		}
     	}
-    	
     }
     
     public void mapView() {
@@ -104,7 +104,6 @@ public class MapActivity extends Activity{
     }
     
     public void addSelfOverlay() {
-// 		自己的位置图层
         myLocationOverlay = new MyLocationOverlay(mMapView);
         LocationData locData = new LocationData();
         locData.latitude = 30.3;
@@ -116,48 +115,24 @@ public class MapActivity extends Activity{
     }
     
     public void addDriverOverlay() {
-//		司机的自定义图层
     	/*
-        double mLat1 = 30.3205910000;
-        double mLon1 = 120.3497580000;  
-        double mLat2 = 30.3198430000;  
-        double mLon2 = 120.3593520000;  
-        double mLat3 = 30.3270600000;  
-        double mLon3 = 120.3958800000;  
-        // 用给定的经纬度构造GeoPoint，单位是微度 (度 * 1E6)  
         GeoPoint p1 = new GeoPoint((int) (mLat1 * 1E6), (int) (mLon1 * 1E6));  
-        GeoPoint p2 = new GeoPoint((int) (mLat2 * 1E6), (int) (mLon2 * 1E6));  
-        GeoPoint p3 = new GeoPoint((int) (mLat3 * 1E6), (int) (mLon3 * 1E6));  
-        //准备overlay图像数据，根据实情情况修复  
 
-        //用OverlayItem准备Overlay数据  
-        OverlayItem item1 = new OverlayItem(p1,"item1","item1");  
-        //使用setMarker()方法设置overlay图片,如果不设置则使用构建ItemizedOverlay时的默认设置  
-        OverlayItem item2 = new OverlayItem(p2,"item2","item2");  
-        item2.setMarker(mark);  
         OverlayItem item3 = new OverlayItem(p3,"item3","item3");  
            
-           */
         //创建IteminizedOverlay  
 
+         */
         Drawable mark = getResources().getDrawable(R.drawable.icon_marka);  
-        //ItemizedOverlay itemOverlay = new ItemizedOverlay(mark ,mMapView);
-        ItemizedOverlay itemOverlay = new ItemizedOverlay(mark, mMapView);  
-        //将IteminizedOverlay添加到MapView中  
-          
-        //mMapView.getOverlays().clear();  
+        itemOverlay = new ItemizedOverlay(mark, mMapView);  
+        
         mMapView.getOverlays().add(itemOverlay);  
            
-        //现在所有准备工作已准备好，使用以下方法管理overlay.  
         //添加overlay, 当批量添加Overlay时使用addItem(List<OverlayItem>)效率更高  
      /*   itemOverlay.addItem(item1);  
-        itemOverlay.addItem(item2);  
-        itemOverlay.addItem(item3);  
         */
         mMapView.refresh();  
         /*
-        删除overlay .  
-        itemOverlay.removeItem(itemOverlay.getItem(0));  
         mMapView.refresh();  
         清除overlay  
         itemOverlay.removeAll();  
@@ -240,9 +215,8 @@ public class MapActivity extends Activity{
                         String pr = sb.toString() + "\n" + Double.toString(mapCenter.getLatitudeE6()/1e6);
                         pr = pr + "\n" + Double.toString(mapCenter.getLongitudeE6()/1e6) + "\n";
              
-
                         Toast toast = Toast.makeText(context, pr, Toast.LENGTH_SHORT);
-                        toast.show();
+                       // toast.show();
                 }    
             
                 public void onReceivePoi(BDLocation poiLocation) {
