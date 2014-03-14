@@ -87,9 +87,8 @@ public class MapActivity extends Activity{
     				
     				String url = "http://10.0.2.2/getDriver.php";
     				String ret = new HttpFunc().execute(url);
-    				
     				JSONArray json = new JSONArray(ret);
-    				Log.d("test", json.toString());
+
     				double last = 0; 
     				for(int i = 0 ;i < json.length(); i++) { 
     					double value = json.getDouble(i);
