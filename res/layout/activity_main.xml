@@ -18,10 +18,25 @@
                 android:layout_gravity="center_vertical"
                 android:text="@string/commit"/>
     </LinearLayout>
-         <com.baidu.mapapi.map.MapView
+    
+    <RelativeLayout 
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent"  
+            android:layout_above="@id/bottom_panel"
+        >
+
+        <com.baidu.mapapi.map.MapView
             android:id="@+id/bmapsView"  
             android:layout_width="fill_parent"  
             android:layout_height="fill_parent"  
             android:clickable="true"
-            android:layout_above="@id/bottom_panel"/>
+        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_st"
+            android:visibility="visible" />
+        
+    </RelativeLayout>
 </RelativeLayout>
