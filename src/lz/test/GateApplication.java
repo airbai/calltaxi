@@ -1,4 +1,6 @@
 package lz.test;
+import com.baidu.mapapi.BMapManager;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -6,6 +8,7 @@ public class GateApplication extends Application {
 
 	public String mk = "";
 	public String prefix = "";
+	public BMapManager mBMapMan = null;
 	double aimLati, aimLong;
 
 	@Override

@@ -17,13 +17,19 @@ import com.baidu.platform.comapi.basestruct.GeoPoint;
 public class CommitActivity extends Activity {
 
 	public String prefix = null;
+	public String mk = null;
 	MKSearch mMKSearch = null;
+	public BMapManager mBMapMan = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		GateApplication app = (GateApplication)getApplication();
 		prefix = app.prefix;
+		mk = app.mk;
+		mBMapMan = app.mBMapMan;
+	//	mBMapMan.start();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_commit);
 
@@ -40,8 +46,6 @@ public class CommitActivity extends Activity {
 		TextView address = (TextView)findViewById(R.id.address);
 		address.setText(Double.toString(aimLong));
 		
-		BMapManager mBMapMan = new BMapManager(getApplication());
-
 	    mMKSearch = new MKSearch();  
 	    mMKSearch.init(mBMapMan, new MySearchListener());		
 	    mMKSearch.reverseGeocode(new GeoPoint((int)(aimLati * 1e6), (int) (aimLong * 1e6)));

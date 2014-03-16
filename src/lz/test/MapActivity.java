@@ -56,13 +56,15 @@ public class MapActivity extends Activity{
     @Override  
     public void onCreate(Bundle savedInstanceState){  
     	
-    	mk = ((GateApplication)getApplication()).mk;
-	    prefix = ((GateApplication)getApplication()).prefix ;
+    	GateApplication app = (GateApplication)getApplication();
+    	mk = app.mk;
+	    prefix = app.prefix ;
     	
         super.onCreate(savedInstanceState);  
 
-        mBMapMan=new BMapManager(getApplication());  
-        mBMapMan.init(mk, null);    
+        mBMapMan = app.mBMapMan;  
+        mBMapMan = new BMapManager(getApplicationContext());
+        mBMapMan.init(mk, null);
         getLoc();
 
         setContentView(R.layout.activity_main);  
