@@ -10,6 +10,7 @@ public class GateApplication extends Application {
 	public String prefix = "";
 	public BMapManager mBMapMan = null;
 	double aimLati, aimLong;
+	public String strAddr = null;
 
 	@Override
 	public void onCreate() {

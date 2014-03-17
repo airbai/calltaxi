@@ -1,6 +1,8 @@
 package lz.test;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,7 @@ public class CommitActivity extends Activity {
 	public String mk = null;
 	MKSearch mMKSearch = null;
 	public GateApplication app = null;
+	public TextView address = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,15 +40,23 @@ public class CommitActivity extends Activity {
 		btnNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(CommitActivity.this, StatusActivity.class));
+                 new AlertDialog.Builder(CommitActivity.this).setMessage("确认提交订单")
+                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						startActivity(new Intent(CommitActivity.this, StatusActivity.class));
+					}
+				 })
+                 .setNegativeButton("取消", null)
+                 .setCancelable(true)
+                 .show();
 			}
 		});
 
 		double aimLati = app.aimLati;
 		double aimLong = app.aimLong;
-		TextView address = (TextView)findViewById(R.id.address);
-		address.setText(Double.toString(aimLong));
-		
+		address = (TextView)findViewById(R.id.address);
+	
 	    mMKSearch = new MKSearch();  
 	    mMKSearch.init(app.mBMapMan, new MySearchListener());		
 	    mMKSearch.reverseGeocode(new GeoPoint((int)(aimLati * 1e6), (int) (aimLong * 1e6)));
@@ -54,14 +65,16 @@ public class CommitActivity extends Activity {
 	public class MySearchListener implements MKSearchListener {
 
 		@Override
-		public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
-			if(0 != arg1) {
+		public void onGetAddrResult(MKAddrInfo result, int iError) {
+			if(0 != iError) {
 				Toast toast = Toast.makeText(CommitActivity.this, "搜索错误", Toast.LENGTH_LONG);
 				toast.show();
 				return ;
 			}
-			
-			Toast toast = Toast.makeText(CommitActivity.this, "搜索成功", Toast.LENGTH_LONG);
+		
+			address.setText(result.strAddr);
+			app.strAddr = result.strAddr;
+			Toast toast = Toast.makeText(CommitActivity.this, result.strAddr, Toast.LENGTH_LONG);
 			toast.show();
 		}
 

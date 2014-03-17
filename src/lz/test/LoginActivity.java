@@ -2,6 +2,7 @@ package lz.test;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
@@ -41,6 +42,11 @@ public class LoginActivity extends Activity {
                     .setCancelable(true)
                     .show();
                 }
+			}
+
+			private Dialog setCancelable(boolean b) {
+				// TODO Auto-generated method stub
+				return null;
 			}
     	});
 

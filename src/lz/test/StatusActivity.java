@@ -6,10 +6,12 @@ import android.os.Bundle;
 public class StatusActivity extends Activity{
 	
 	public String prefix = null;
+	public GateApplication app = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		prefix = ((GateApplication)getApplication()).mk;
+		app = (GateApplication)getApplication();
+		prefix = app.mk;
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
 	}
