@@ -46,25 +46,24 @@ public class MapActivity extends Activity{
 
 	public String mk = null;
 	public String prefix = null;
-    public BMapManager mBMapMan = null;
     public MapView mMapView = null;
     public LocationClient mLocationClient = null;
     public MyLocationListener myListener = null;
     public MyLocationOverlay myLocationOverlay = null;
     public ItemizedOverlay itemOverlay= null;
+    public GateApplication app = null;
 
     @Override  
     public void onCreate(Bundle savedInstanceState){  
     	
-    	GateApplication app = (GateApplication)getApplication();
+    	app = (GateApplication)getApplication();
     	mk = app.mk;
 	    prefix = app.prefix ;
     	
         super.onCreate(savedInstanceState);  
 
-        mBMapMan = app.mBMapMan;  
-        mBMapMan = new BMapManager(getApplicationContext());
-        mBMapMan.init(mk, null);
+        app.mBMapMan = new BMapManager(getApplication());
+        app.mBMapMan.init(mk, null);
         getLoc();
 
         setContentView(R.layout.activity_main);  
@@ -266,9 +265,9 @@ public class MapActivity extends Activity{
     @Override  
     protected void onDestroy(){  
             mMapView.destroy();  
-            if(mBMapMan!=null) {
-                    mBMapMan.destroy();  
-                    mBMapMan=null;  
+            if(app.mBMapMan!=null) {
+                    app.mBMapMan.destroy();  
+                    app.mBMapMan=null;  
             }  
             super.onDestroy();  
     }  
@@ -279,18 +278,16 @@ public class MapActivity extends Activity{
             if(null != mLocationClient && true == mLocationClient.isStarted())
             	mLocationClient.stop();
 
-            if(mBMapMan!=null){  
-                   mBMapMan.stop();  
-            }  
+            if(app.mBMapMan!=null)
+            	app.mBMapMan.stop();  
             super.onPause();  
     }  
 
     @Override  
     protected void onResume(){  
             mMapView.onResume();  
-            if(mBMapMan!=null){  
-                    mBMapMan.start();  
-            }  
+            if(app.mBMapMan!=null)
+                app.mBMapMan.start();  
            super.onResume();  
     }  
 }   

@@ -19,17 +19,17 @@ public class CommitActivity extends Activity {
 	public String prefix = null;
 	public String mk = null;
 	MKSearch mMKSearch = null;
-	public BMapManager mBMapMan = null;
+	public GateApplication app = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
-		GateApplication app = (GateApplication)getApplication();
+		app = (GateApplication)getApplication();
 		prefix = app.prefix;
 		mk = app.mk;
-		mBMapMan = app.mBMapMan;
-	//	mBMapMan.start();
-		
+
+		app.mBMapMan.start();
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_commit);
 
@@ -47,7 +47,7 @@ public class CommitActivity extends Activity {
 		address.setText(Double.toString(aimLong));
 		
 	    mMKSearch = new MKSearch();  
-	    mMKSearch.init(mBMapMan, new MySearchListener());		
+	    mMKSearch.init(app.mBMapMan, new MySearchListener());		
 	    mMKSearch.reverseGeocode(new GeoPoint((int)(aimLati * 1e6), (int) (aimLong * 1e6)));
 	}
 	
@@ -55,7 +55,6 @@ public class CommitActivity extends Activity {
 
 		@Override
 		public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
-			Log.e("test", "success");
 			if(0 != arg1) {
 				Toast toast = Toast.makeText(CommitActivity.this, "搜索错误", Toast.LENGTH_LONG);
 				toast.show();
