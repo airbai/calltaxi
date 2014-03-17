@@ -114,6 +114,7 @@ public class MapActivity extends Activity{
     					}
     				}
                     mMapView.refresh();  
+                    Log.e("Main", "success");
     			} 
     			catch (Exception e) {
     				e.printStackTrace();

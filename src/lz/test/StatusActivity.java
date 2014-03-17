@@ -3,10 +3,12 @@ package lz.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class StatusActivity extends Activity{
 	
@@ -36,17 +38,31 @@ public class StatusActivity extends Activity{
 		
 		HttpFunc web = new HttpFunc();
 		String url = prefix + "Commit.php?id=" + app.id + "&lati=" + app.aimLati + "&long=" + app.aimLong;
-		Log.e("Status", url);
-		web.execute(url);
+		String ret = web.execute(url);
+		app.log_id = Integer.parseInt(ret);
+
+		new Thread(new Update()).start();
 	}
 	
 	public class Update implements Runnable {
 		@Override 
 		public void run() {
 			try {
-				Thread.sleep(2000);
-				
-			} catch (InterruptedException e) {
+				while(true) {
+                    Thread.sleep(2000);
+                    HttpFunc web = new HttpFunc();
+                    String url = prefix + "UpdateStatus.php?log_id=" + app.log_id;
+                    String ret = web.execute(url);
+                    
+                    if(true == ret.equals("no")) 
+                    	status.setText("暂时还没有司机来接您");
+                    else {
+                    	status.setText("司机终于来咯 他的车牌是" + ret);
+                    }
+                    Log.e("Commit", "own");
+				}
+			} 
+			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 

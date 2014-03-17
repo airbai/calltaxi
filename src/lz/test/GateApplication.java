@@ -12,6 +12,7 @@ public class GateApplication extends Application {
 	double aimLati, aimLong;
 	public String strAddr = null;
 	public String id = null;
+	int log_id = 0;
 
 	@Override
 	public void onCreate() {
