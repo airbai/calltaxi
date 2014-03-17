@@ -13,9 +13,11 @@ public class RegisterActivity extends Activity {
 	public Button btnRegisterBack, btnFinishRegister;
 	public EditText inputRegisterId, inputRegisterPwd, inputRegisterRePwd;
 	public String prefix = null;
+	public GateApplication app = null;
 	
     public void onCreate(Bundle savedInstanceState){  
-    	prefix = ((GateApplication)getApplication()).mk;
+    	app = (GateApplication)getApplication();
+    	prefix = app.prefix;
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_register);
     	
@@ -62,6 +64,7 @@ public class RegisterActivity extends Activity {
                     .setPositiveButton("确定", null)
                     .setCancelable(true)
                     .show();
+                 	app.id = Sid;
                  	startActivity(new Intent(RegisterActivity.this, MapActivity.class));
                 }
 			}

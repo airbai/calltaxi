@@ -14,9 +14,11 @@ public class LoginActivity extends Activity {
 	public EditText inputId, inputPwd;
 	public Button btnLogin, btnRegister;
 	public String prefix = null;
+	public GateApplication app = null;
 
     public void onCreate(Bundle savedInstanceState){  
-    	prefix = ((GateApplication)getApplication()).mk;
+    	app = (GateApplication)getApplication();
+    	prefix = ((GateApplication)getApplication()).prefix;
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_login);  
     	btnLogin = (Button)findViewById(R.id.login_button);
@@ -34,8 +36,10 @@ public class LoginActivity extends Activity {
                 Log.e("test", url);
                 String ret = new HttpFunc().execute(url);
                 Log.e("ret", ret);
-                if(true == ret.equals("yes"))
+                if(true == ret.equals("yes")) {
+                	app.id = Sid;
                 	startActivity(new Intent(LoginActivity.this, MapActivity.class));
+                }
                 else {
                  	new AlertDialog.Builder(LoginActivity.this).setMessage("密码错误")
                     .setPositiveButton("确定", null)

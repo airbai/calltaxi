@@ -11,6 +11,7 @@ public class GateApplication extends Application {
 	public BMapManager mBMapMan = null;
 	double aimLati, aimLong;
 	public String strAddr = null;
+	public String id = null;
 
 	@Override
 	public void onCreate() {
