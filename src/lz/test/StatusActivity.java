@@ -3,6 +3,7 @@ package lz.test;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,18 @@ public class StatusActivity extends Activity{
 	public String prefix = null;
 	public GateApplication app = null;
 	public TextView status = null;
+	public String webRet = null;
+	final Handler handle = new Handler();
+	final Runnable updateUI = new Runnable() {
+		@Override 
+		public void run() {
+			if(true == webRet.equals("no"))
+				status.setText("暂时还没有司机来接您哦");
+			else
+				status.setText("牌照为" + webRet + "的车辆已经接单");
+			Log.e("commit", "updateUI");
+		}
+	};
 		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +40,20 @@ public class StatusActivity extends Activity{
 		cancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				HttpFunc web = new HttpFunc();
+				String url = prefix + "update.php?log_id=" + app.log_id + "&to=-1";
+				web.execute(url);
+				startActivity(new Intent(StatusActivity.this, MapActivity.class));
+			}
+		});
+
+		Button finish = (Button)findViewById(R.id.btn_finish);
+		finish.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				HttpFunc web = new HttpFunc();
+				String url = prefix + "update.php?log_id=" + app.log_id + "&to=1";
+				web.execute(url);
 				startActivity(new Intent(StatusActivity.this, MapActivity.class));
 			}
 		});
@@ -52,20 +79,13 @@ public class StatusActivity extends Activity{
                     Thread.sleep(2000);
                     HttpFunc web = new HttpFunc();
                     String url = prefix + "UpdateStatus.php?log_id=" + app.log_id;
-                    String ret = web.execute(url);
-                    
-                    if(true == ret.equals("no")) 
-                    	status.setText("暂时还没有司机来接您");
-                    else {
-                    	status.setText("司机终于来咯 他的车牌是" + ret);
-                    }
-                    Log.e("Commit", "own");
+                    webRet = web.execute(url);
+                    handle.post(updateUI);
 				}
 			} 
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
 		}
 	}
 	

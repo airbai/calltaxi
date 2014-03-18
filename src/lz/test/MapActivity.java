@@ -114,7 +114,6 @@ public class MapActivity extends Activity{
     					}
     				}
                     mMapView.refresh();  
-                    Log.e("Main", "success");
     			} 
     			catch (Exception e) {
     				e.printStackTrace();
@@ -133,7 +132,7 @@ public class MapActivity extends Activity{
         GeoPoint point = new GeoPoint((int)(39.915* 1E6),(int)(116.404* 1E6));  
         //用给定的经纬度构造一个GeoPoint，单位是微度 (度 * 1E6)  
         mMapController.setCenter(point);//设置地图中心点  
-        mMapController.setZoom(12);//设置地图zoom级别
+        mMapController.setZoom(18);//设置地图zoom级别
     }
     
     public void addSelfOverlay() {
@@ -262,7 +261,6 @@ public class MapActivity extends Activity{
                 }
         }
      
-
     @Override  
     protected void onDestroy(){  
             mMapView.destroy();  

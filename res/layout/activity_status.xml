@@ -29,5 +29,11 @@
         android:hint="撤销您的订单"
         />
 
+    <Button 
+        android:id="@+id/btn_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:hint="我已到达目的地"
+        />
 
 </LinearLayout>
