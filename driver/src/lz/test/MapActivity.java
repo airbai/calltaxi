@@ -52,7 +52,6 @@ public class MapActivity extends Activity{
     public MyLocationOverlay myLocationOverlay = null;
     public ItemizedOverlay itemOverlay= null;
     public GateApplication app = null;
-    public boolean move = false;
 
     @Override  
     public void onCreate(Bundle savedInstanceState){  
@@ -70,6 +69,7 @@ public class MapActivity extends Activity{
         setContentView(R.layout.activity_main);  
         
         mapView();
+        addSelfOverlay();
         addDriverOverlay();
         
         // 做Button 监听
@@ -135,11 +135,11 @@ public class MapActivity extends Activity{
         mMapController.setZoom(18);//设置地图zoom级别
     }
     
-    public void addSelfOverlay(double Lati, double Long) {
+    public void addSelfOverlay() {
         myLocationOverlay = new MyLocationOverlay(mMapView);
         LocationData locData = new LocationData();
-        locData.latitude = Lati;
-        locData.longitude = Long;
+        locData.latitude = 30.3;
+        locData.longitude = 120.2;
         myLocationOverlay.setData(locData);
         mMapView.getOverlays().add(myLocationOverlay);
         mMapView.refresh();
@@ -155,6 +155,7 @@ public class MapActivity extends Activity{
     public void getLoc() {
         myListener = new MyLocationListener(MapActivity.this, 
     		(MapView)findViewById(R.id.bmapsView));
+       // myListener = new MyLocationListener(MapActivity.this);
         
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.setAccessKey(mk);
@@ -215,18 +216,19 @@ public class MapActivity extends Activity{
                                  sb.append(location.getAddrStr());
                          }
                          
-                         if(false == move) {
-                        	 addSelfOverlay(location.getLatitude() ,location.getLongitude());
-                        	 move = true;
-                         }
-                         else {
-                        	 LocationData locData = new LocationData();
-                        	 locData.latitude = location.getLatitude();
-                        	 locData.longitude = location.getLongitude();
-                        	 locData.direction = location.getDirection();
-                        	 myLocationOverlay.setData(locData);
-                         }
+                        LocationData locData = new LocationData();
+                        locData.latitude = location.getLatitude();
+                        locData.longitude = location.getLongitude();
+                        locData.direction = location.getDirection();
+                        myLocationOverlay.setData(locData);
+
                         mMapView.refresh();
+                        GeoPoint mapCenter = mMapView.getMapCenter();
+                        String pr = sb.toString() + "\n" + Double.toString(mapCenter.getLatitudeE6()/1e6);
+                        pr = pr + "\n" + Double.toString(mapCenter.getLongitudeE6()/1e6) + "\n";
+             
+                        Toast toast = Toast.makeText(context, pr, Toast.LENGTH_SHORT);
+                       // toast.show();
                 }    
             
                 public void onReceivePoi(BDLocation poiLocation) {
