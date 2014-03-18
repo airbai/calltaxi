@@ -98,7 +98,7 @@ public class MapActivity extends Activity{
     				Thread.sleep(2000);
     				itemOverlay.removeAll();
     				
-    				String url = prefix + "getDriver.php";
+    				String url = prefix + "getUser.php";
     				String ret = new HttpFunc().execute(url);
     				JSONArray json = new JSONArray(ret);
 

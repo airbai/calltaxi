@@ -21,11 +21,9 @@ public class GateApplication extends Application {
 		super.onCreate();
 	}
 	public void setMk() {
-		Log.e("test", "guess right");
 		mk = "KyBbknEZgtH41rYQDdTjkS2U";
 	}
 	public void setPrefix() {
-		Log.e("test", "guess right");
 		prefix = "http://10.0.2.2/";
 	}
 }

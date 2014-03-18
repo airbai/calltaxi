@@ -11,7 +11,7 @@ import android.view.*;
 public class RegisterActivity extends Activity {
 	
 	public Button btnRegisterBack, btnFinishRegister;
-	public EditText inputRegisterId, inputRegisterPwd, inputRegisterRePwd;
+	public EditText inputRegisterId, inputRegisterPwd, inputRegisterRePwd, license;
 	public String prefix = null;
 	public GateApplication app = null;
 	
@@ -26,6 +26,7 @@ public class RegisterActivity extends Activity {
     	inputRegisterId = (EditText)findViewById(R.id.register_username);
     	inputRegisterPwd = (EditText)findViewById(R.id.register_psword);
     	inputRegisterRePwd = (EditText)findViewById(R.id.register_repsword);
+    	license = (EditText)findViewById(R.id.license);
     	
     	btnRegisterBack.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -39,6 +40,7 @@ public class RegisterActivity extends Activity {
 				String Sid = inputRegisterId.getText().toString();
                 String Spwd = inputRegisterPwd.getText().toString();
                 String Srepwd = inputRegisterRePwd.getText().toString();
+                String Slicense = license.getText().toString();
                 
                 if(false == Spwd.equals(Srepwd)) {
                  	new AlertDialog.Builder(RegisterActivity.this).setMessage("两次密码不一致")
@@ -48,7 +50,7 @@ public class RegisterActivity extends Activity {
                 	return ;
                 }
                 
-                String url = prefix + "register.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
+                String url = prefix + "register.php?id=" + Sid + "&pwd=" + Spwd + "&type=1&license=" + Slicense;
                 Log.e("test", url);
                 String ret = new HttpFunc().execute(url);
                 Log.e("ret", ret);

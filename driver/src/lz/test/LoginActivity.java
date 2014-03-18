@@ -32,7 +32,7 @@ public class LoginActivity extends Activity {
 				String Sid = inputId.getText().toString();
                 String Spwd = inputPwd.getText().toString();
 
-                String url = prefix + "login.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
+                String url = prefix + "login.php?id=" + Sid + "&pwd=" + Spwd + "&type=1";
                 Log.e("test", url);
                 String ret = new HttpFunc().execute(url);
                 Log.e("ret", ret);
