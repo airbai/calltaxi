@@ -52,7 +52,7 @@ public class MapActivity extends Activity{
     public LocationClient mLocationClient = null;
     public MyLocationListener myListener = null;
     public MyLocationOverlay myLocationOverlay = null;
-    public ItemizedOverlay itemOverlay= null;
+    public OverlayTest itemOverlay= null;
     public GateApplication app = null;
     public boolean move = false;
 
@@ -72,7 +72,7 @@ public class MapActivity extends Activity{
         setContentView(R.layout.activity_main);  
         
         mapView();
-        addDriverOverlay();
+        addUserOverlay();
         
         // 做Button 监听
         Button btnCommit = (Button) findViewById(R.id.CommitButton);
@@ -175,9 +175,9 @@ public class MapActivity extends Activity{
         mMapView.getController().animateTo(new GeoPoint((int)( locData.latitude * 1e6),(int)(locData.longitude * 1e6)));
     }
     
-    public void addDriverOverlay() {
+    public void addUserOverlay() {
         Drawable mark = getResources().getDrawable(R.drawable.icon_marka);  
-        itemOverlay = new ItemizedOverlay(mark, mMapView);  
+        itemOverlay = new OverlayTest(mark, mMapView);  
         mMapView.getOverlays().add(itemOverlay);  
     }
 
