@@ -15,7 +15,9 @@ import android.util.Log;
 import android.view.Menu;  
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;  
+import android.widget.Switch;
 import android.widget.Toast;  
 import com.baidu.mapapi.BMapManager;  
 import com.baidu.mapapi.map.ItemizedOverlay;
@@ -86,8 +88,35 @@ public class MapActivity extends Activity{
 			}
 		});
         
+        Switch sw = (Switch)findViewById(R.id.swt);
+        sw.setChecked(isWork());
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {  
+            @Override  
+            public void onCheckedChanged(CompoundButton buttonView,  
+                    boolean isChecked) {  
+                Toast.makeText(MapActivity.this, isChecked + "",  
+                        Toast.LENGTH_SHORT).show();  
+
+                HttpFunc web = new HttpFunc();
+                String url = prefix + "changeDriver.php?id=" + app.id + "&type=";
+                if(isChecked == true)
+                	url = url + "1";
+                else
+                	url = url + "0";
+                web.execute(url); 
+            }
+        });
         new Thread(new Update()).start();
     }  
+    
+    public boolean isWork() {
+    	HttpFunc web = new HttpFunc();
+    	String url = prefix + "isWork.php?id=" + app.id;
+    	String ret = web.execute(url);
+    	if(true == ret.equals("yes"))
+    		return true;
+    	return false;
+    }
     
     public class Update implements Runnable {
     	@Override
@@ -227,35 +256,14 @@ public class MapActivity extends Activity{
                         	 myLocationOverlay.setData(locData);
                          }
                         mMapView.refresh();
+                        HttpFunc web = new HttpFunc();
+                        String url = prefix + "updatePos.php?id=" + app.id + "&lait=" + location.getLatitude();
+                        url = url + "&long=" + location.getLongitude();
+                        if(true == isWork())
+                            web.execute(url);
                 }    
             
                 public void onReceivePoi(BDLocation poiLocation) {
-                        if (poiLocation == null)
-                        	return ;
-
-                        StringBuffer sb = new StringBuffer(256);
-                        sb.append("Poi time : ");
-                        sb.append(poiLocation.getTime());
-                        sb.append("\nerror code : ");
-                        sb.append(poiLocation.getLocType());
-                        sb.append("\nlatitude : ");
-                        sb.append(poiLocation.getLatitude());
-                        sb.append("\nlontitude : ");
-                        sb.append(poiLocation.getLongitude());
-                        sb.append("\nradius : ");
-                        sb.append(poiLocation.getRadius());
-                        if (poiLocation.getLocType() == BDLocation.TypeNetWorkLocation){
-                            sb.append("\naddr : ");
-                            sb.append(poiLocation.getAddrStr());
-                        }
-                        if(poiLocation.hasPoi()) {
-                            sb.append("\nPoi:");
-                                sb.append(poiLocation.getPoi());
-                         }
-                         else 
-                                 sb.append("noPoi information");
-
-                         Log.e("test",sb.toString());
                 }
         }
      
