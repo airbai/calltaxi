@@ -55,6 +55,9 @@ public class MapActivity extends Activity{
     public OverlayTest itemOverlay= null;
     public GateApplication app = null;
     public boolean move = false;
+    public int[] log_id = new int[1010];
+    public double[] lati = new double[1010];
+    public double[] Long = new double[1010];
 
     @Override  
     public void onCreate(Bundle savedInstanceState){  
@@ -76,17 +79,6 @@ public class MapActivity extends Activity{
         
         // 做Button 监听
         Button btnCommit = (Button) findViewById(R.id.CommitButton);
-        btnCommit.setOnClickListener( new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				GateApplication app = (GateApplication)getApplication();
-                GeoPoint mapCenter = mMapView.getMapCenter();
-                app.aimLati = mapCenter.getLatitudeE6()/1e6;
-                app.aimLong = mapCenter.getLongitudeE6()/1e6;
-
-				startActivity(new Intent(MapActivity.this, CommitActivity.class));
-			}
-		});
         
         Switch sw = (Switch)findViewById(R.id.swt);
         sw.setChecked(isWork());
@@ -131,13 +123,18 @@ public class MapActivity extends Activity{
     				String ret = new HttpFunc().execute(url);
     				JSONArray json = new JSONArray(ret);
 
-    				double last = 0; 
+    				double last = 0, value; 
     				for(int i = 0 ;i < json.length(); i++) { 
-    					double value = json.getDouble(i);
-    					if(0 == i % 2)
-    						last = value;
-    					else {
-    						GeoPoint p1 = new GeoPoint((int) (last * 1E6), (int) (value * 1E6));  
+    					if(2 == i % 3) {
+    						log_id[i/3] = json.getInt(i);
+    						continue;
+    					}
+    					value = json.getDouble(i);
+    					if(0 == i % 3)
+    						lati[i/3] = value;
+    					else if(1 == i % 3) {
+    						Long[i/3] = value;
+    						GeoPoint p1 = new GeoPoint((int) (lati[i/3] * 1E6), (int) (Long[i/3] * 1E6));  
     						OverlayItem item = new OverlayItem(p1,"","");  
     						itemOverlay.addItem(item);
     					}
@@ -206,7 +203,6 @@ public class MapActivity extends Activity{
     }
 
      public class MyLocationListener implements BDLocationListener {
-	
                  public Context context;
                  public MapView mapview;
 
@@ -266,6 +262,25 @@ public class MapActivity extends Activity{
                 public void onReceivePoi(BDLocation poiLocation) {
                 }
         }
+     
+     class OverlayTest extends ItemizedOverlay<OverlayItem> {  
+    	 public OverlayTest(Drawable mark,MapView mapView){  
+             super(mark,mapView);  
+    	 }  
+
+    	 protected boolean onTap(int index) {  
+    		 app.aimLati = lati[index];
+    		 app.aimLong = Long[index];
+    		 app.log_id = log_id[index];
+    		 startActivity(new Intent(MapActivity.this, CommitActivity.class));
+    		 return true;  
+    	 }  
+
+    	 public boolean onTap(GeoPoint pt, MapView mapView){  
+    		 super.onTap(pt,mapView);  
+    		 return false;  
+    	 }  
+     }          
      
     @Override  
     protected void onDestroy(){  

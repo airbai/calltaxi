@@ -47,21 +47,9 @@ public class StatusActivity extends Activity{
 			}
 		});
 
-		Button finish = (Button)findViewById(R.id.btn_finish);
-		finish.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				HttpFunc web = new HttpFunc();
-				String url = prefix + "update.php?log_id=" + app.log_id + "&to=1";
-				web.execute(url);
-				startActivity(new Intent(StatusActivity.this, MapActivity.class));
-			}
-		});
-		
 		status = (TextView)findViewById(R.id.status_Text);
-		status.setText("还没接单");
 		TextView getCar = (TextView)findViewById(R.id.getCar_text);
-		getCar.setText("您的上车地点为:" + app.strAddr);
+		getCar.setText("您的接客地点为:" + app.strAddr);
 		
 		HttpFunc web = new HttpFunc();
 		String url = prefix + "Commit.php?id=" + app.id + "&lati=" + app.aimLati + "&long=" + app.aimLong;
