@@ -52,7 +52,7 @@ public class StatusActivity extends Activity{
 			@Override
 			public void onClick(View v) {
 				HttpFunc web = new HttpFunc();
-				String url = prefix + "update.php?log_id=" + app.log_id + "&to=1";
+				String url = prefix + "update.php?log_id=" + app.log_id + "&to=2";
 				web.execute(url);
 				startActivity(new Intent(StatusActivity.this, MapActivity.class));
 			}
