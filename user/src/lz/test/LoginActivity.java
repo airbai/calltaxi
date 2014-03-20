@@ -15,6 +15,8 @@ public class LoginActivity extends Activity {
 	public Button btnLogin, btnRegister;
 	public String prefix = null;
 	public GateApplication app = null;
+	public Button commitIp = null;
+	public EditText ip = null;
 
     public void onCreate(Bundle savedInstanceState){  
     	app = (GateApplication)getApplication();
@@ -26,6 +28,15 @@ public class LoginActivity extends Activity {
     	
     	inputId = (EditText)findViewById(R.id.login_username);
     	inputPwd = (EditText)findViewById(R.id.login_psword);
+    	ip = (EditText)findViewById(R.id.login_ip);
+    	commitIp = (Button)findViewById(R.id.login_commitip);
+    	
+    	commitIp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				app.prefix = "http://" + ip.getText().toString() + "/";
+			}
+		});
 
     	btnLogin.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -49,7 +60,6 @@ public class LoginActivity extends Activity {
 			}
 
 			private Dialog setCancelable(boolean b) {
-				// TODO Auto-generated method stub
 				return null;
 			}
     	});
