@@ -20,7 +20,6 @@ public class LoginActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState){  
     	app = (GateApplication)getApplication();
-    	prefix = ((GateApplication)getApplication()).prefix;
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_login);  
     	btnLogin = (Button)findViewById(R.id.login_button);
@@ -43,7 +42,7 @@ public class LoginActivity extends Activity {
 				String Sid = inputId.getText().toString();
                 String Spwd = inputPwd.getText().toString();
 
-                String url = prefix + "login.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
+                String url = app.prefix + "login.php?id=" + Sid + "&pwd=" + Spwd + "&type=0";
                 Log.e("test", url);
                 String ret = new HttpFunc().execute(url);
                 Log.e("ret", ret);

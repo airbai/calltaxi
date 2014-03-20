@@ -13,14 +13,12 @@ public class LoginActivity extends Activity {
 	
 	public EditText inputId, inputPwd;
 	public Button btnLogin, btnRegister;
-	public String prefix = null;
 	public GateApplication app = null;
 	public Button commitIp;
 	public EditText ip;
 
     public void onCreate(Bundle savedInstanceState){  
     	app = (GateApplication)getApplication();
-    	prefix = ((GateApplication)getApplication()).prefix;
     	super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_login);  
     	btnLogin = (Button)findViewById(R.id.login_button);
@@ -44,7 +42,7 @@ public class LoginActivity extends Activity {
 				String Sid = inputId.getText().toString();
                 String Spwd = inputPwd.getText().toString();
 
-                String url = prefix + "login.php?id=" + Sid + "&pwd=" + Spwd + "&type=1";
+                String url = app.prefix + "login.php?id=" + Sid + "&pwd=" + Spwd + "&type=1";
                 Log.e("test", url);
                 String ret = new HttpFunc().execute(url);
                 Log.e("ret", ret);

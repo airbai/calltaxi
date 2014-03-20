@@ -87,5 +87,4 @@
             android:configChanges="orientation|keyboardHidden">  
         </activity>
     </application>
-
 </manifest>
