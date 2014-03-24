@@ -1,0 +1,41 @@
+数据库 使用 mysql 5.6.16
+数据库名为 calltaxi
+其中包含的表有:
+
+user_info  
+	乘客的帐号密码
+	有以下字段 id char(20)
+        pwd char(20)
+        type smallint
+	一个id 只能注册一次
+	
+driver_info
+	司机的帐号 密码 和 车牌
+
+	有一下字段
+	id char(20)
+	pwd char(20)
+	license char(20)
+
+driver_loca
+	工作状态司机的 位置和 是否能接客状态
+	id char(20) 司机id
+	lati double 纬度
+	long double 经度
+	valid int -1为 未接客
+
+user_loca
+	id char(20)
+	lati double 纬度
+	long double 经度
+
+log
+	user_id		char(20)
+	driver_id	char(20)
+	st_time       DATATIME
+	ed_time       DATATIME
+	status     状态 0代表还没有 司机接客 1代表司机以接客 2 代表 订单以完成 -1表示订单被双方中某一方取消
+
+
+
+
